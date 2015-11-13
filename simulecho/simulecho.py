@@ -12,6 +12,7 @@ import wradlib
 from netCDF4 import Dataset
 from streetmap import street_map
 from zoompan import ZoomPan
+from select_center import Click_to_go
 
 class Rad_sim():
     def __init__(self):
@@ -24,7 +25,8 @@ class Rad_sim():
         self.base_map = street_map(self.lon_data[0], self.lat_data[0],
                                 self.lon_data[self.uy-1], self.lat_data[self.ux-1],
                                 (self.uy,self.ux))
-  
+        self.fig = plt.figure(figsize=[10,8])
+    
     def find_area(self):
         #ll = lower left and ur = upper right
         lon_lat_dist = self.radius/111.276
@@ -105,14 +107,13 @@ class Rad_sim():
                 M[a*j-lim,b*i+lim] = 1
         return M
       
-    def show_image(self, M, M_size, center):
+    def show_image(self, M, M_size, center, fig):
         ll_lon, ll_lat, ur_lon, ur_lat = self.find_area()
-        fig = plt.figure(figsize=[10,8])
         ax = fig.add_subplot(111)
         plt.title("lon = " + str(self.lon) + " e lat = " + str(self.lat) \
                 + "\nelev = " + str(self.elev))
-        plt.imshow(self.base_map,origin='lower')
-        plt.plot(center[1],center[0],'kx',markersize=10)
+        plt.imshow(self.base_map,origin='lower',hold=False)
+        ax.plot(center[1],center[0],'kx',markersize=10)
         xyticks = 9
         ll_lon = self.lon_data[0]
         ll_lat = self.lat_data[0]
@@ -134,12 +135,8 @@ class Rad_sim():
         for i in xrange(2*M_size):
             for j in xrange(2*M_size):
                 if M[2*M_size-1-i,2*M_size-1-j] == 1:
-                    plt.plot(center[1]+M_size-j,center[0]+M_size-i,'o',markersize=1,color='red')
-        zp = ZoomPan(ax)
-        figZoom = zp.zoom_factory(ax, base_scale = 1.1)
-        figPan = zp.pan_factory(ax)
-        plt.show()
-
+                    ax.plot(center[1]+M_size-j,center[0]+M_size-i,'o',markersize=1,color='red')
+        return ax
 
     def echo(self,lon=-50.36111,lat=-25.50528, radius=150, tower_h=25.,
                 h=4.5, elev=0.3, pos_LP=0., pos_1LS=-2.7, pos_2LS=-1.9, pos_3LS=-1.3,
@@ -170,4 +167,18 @@ class Rad_sim():
         for azi in xrange(360):
             M = self.height(T,M,azi,n2,lim)
         #plot
-        self.show_image(M,lim,center)
+        ax = self.show_image(M,lim,center,self.fig)
+        return ax
+        
+        
+    def simulate(self,lon=-50.36111,lat=-25.50528, radius=150, tower_h=25.,
+                h=4.5, elev=0.3, pos_LP=0., pos_1LS=-2.7, pos_2LS=-1.9, pos_3LS=-1.3,
+                ang_LP=1., ang_1LS=0.5, ang_2LS=0.25, ang_3LS=0.125, alt=None):
+         ax = self.echo(lon,lat, radius, tower_h,
+                h, elev, pos_LP, pos_1LS, pos_2LS, pos_3LS,
+                ang_LP, ang_1LS, ang_2LS, ang_3LS, alt)
+         ax.figure.canvas.draw()
+         zp = ZoomPan(ax,self.echo,self.lat_data[0],self.lon_data[0])
+         figZoom = zp.zoom_factory(ax, base_scale = 1.1)
+         figPan = zp.pan_factory(ax)
+         plt.show()
