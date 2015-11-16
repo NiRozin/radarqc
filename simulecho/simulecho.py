@@ -12,7 +12,6 @@ import wradlib
 from netCDF4 import Dataset
 from streetmap import street_map
 from zoompan import ZoomPan
-from select_center import Click_to_go
 
 class Rad_sim():
     def __init__(self):
