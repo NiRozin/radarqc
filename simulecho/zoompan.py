@@ -3,7 +3,7 @@
 #A class that allows zoom and moving in matplotlib axes inside the figure limits.
 
 class ZoomPan:
-    def __init__(self, ax, func, lat0, lon0, topography=0):
+    def __init__(self, ax, func, lat0, lon0, elev, topography=0):
         self.press = None
         self.cur_xlim = ax.get_xlim()
         self.cur_ylim = ax.get_ylim()
@@ -16,6 +16,7 @@ class ZoomPan:
         self.func = func
         self.lon0 = lon0
         self.lat0 = lat0
+        self.elev = elev
         self.xlim = None
         self.ylim = None
         self.call_echo = None
@@ -77,7 +78,10 @@ class ZoomPan:
             self.press = None
             if self.x1[0]==self.xlim[0]:
                 if self.y1[0]==self.ylim[0]:
-                    axe = self.func(lat=self.lat0-self.ypress/60.,lon=self.lon0+self.xpress/60.,topography=self.topo,cbar=0)
+                    axe = self.func(elev=self.elev,
+                                    lat=self.lat0-self.ypress/60.,
+                                    lon=self.lon0+self.xpress/60.,
+                                    topography=self.topo,cbar=0)
                     ax.set_xlim(self.xlim)
                     ax.set_ylim(self.ylim)
             ax.figure.canvas.draw()

@@ -184,8 +184,10 @@ class Rad_sim():
                 h, elev, pos_LP, pos_1LS, pos_2LS, pos_3LS,
                 ang_LP, ang_1LS, ang_2LS, ang_3LS, alt,topography=topography,cbar=1)
          ###
-         zp = ZoomPan(ax,self.echo,self.lat_data[0],self.lon_data[0],topography=topography)
+         zp = ZoomPan(ax,self.echo,self.lat_data[0],self.lon_data[0],
+                      elev=self.elev,topography=topography)
          figZoom = zp.zoom_factory(ax, base_scale = 1.1)
          figPan = zp.pan_factory(ax)
          ###
          plt.show()
+         return self.lon, self.lat
