@@ -78,10 +78,16 @@ class ZoomPan:
             self.press = None
             if self.x1[0]==self.xlim[0]:
                 if self.y1[0]==self.ylim[0]:
-                    axe = self.func(elev=self.elev,
-                                    lat=self.lat0-self.ypress/60.,
-                                    lon=self.lon0+self.xpress/60.,
-                                    topography=self.topo,cbar=0)
+                    if self.topo==1:
+                        axe = self.func(elev=self.elev,
+                                        lat=self.lat0-self.ypress/60.,
+                                        lon=self.lon0+self.xpress/60.,
+                                        topography=self.topo,cbar=0)
+                    else:
+                        axe = self.func(elev=self.elev,
+                                        lat=self.lat0-self.ypress/95.013,
+                                        lon=self.lon0+self.xpress/95.013,
+                                        topography=self.topo,cbar=0)
                     ax.set_xlim(self.xlim)
                     ax.set_ylim(self.ylim)
             ax.figure.canvas.draw()

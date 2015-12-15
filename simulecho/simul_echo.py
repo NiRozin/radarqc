@@ -24,7 +24,7 @@ class Rad_sim():
         self.ux, self.uy = self.topo_data.shape
         self.base_map = street_map(self.lon_data[0], self.lat_data[0],
                                 self.lon_data[self.uy-1], self.lat_data[self.ux-1],
-                                (self.uy,self.ux))
+                                (self.uy+2800,self.ux+2520))
         self.fig = plt.figure(figsize=[10,8])
     
     def find_area(self):
@@ -37,7 +37,7 @@ class Rad_sim():
         return ll_lon, ll_lat, ur_lon, ur_lat
 
 
-    def get_area(self):
+    def get_area(self,topography):
         lon_lat_dist = self.radius/111.276
         ll_lon = self.lon - lon_lat_dist
         ll_lat = self.lat - lon_lat_dist
@@ -55,6 +55,11 @@ class Rad_sim():
         ll_y = dy - lon_lat_dist
         ur_x = dx + lon_lat_dist
         ur_y = dy + lon_lat_dist
+        if topography==0:
+            dx = abs(lat1 - self.lat)
+            dy = abs(lon1 - self.lon)
+            dx = int(np.round(dx*95.013))
+            dy = int(np.round(dy*95.013))
         return self.topo_data[ll_x:ur_x,ll_y:ur_y], (dx,dy)
 
 
@@ -125,9 +130,13 @@ class Rad_sim():
         ll_lat = self.lat_data[0]
         ur_lon = self.lon_data[self.uy-1]
         ur_lat = self.lat_data[self.ux-1]
-        xticks = self.uy
-        yticks = self.ux
-        length = 30
+        if topography==1:
+            xticks = self.uy
+            yticks = self.ux
+        else:
+            xticks = self.uy + 2800
+            yticks = self.ux + 2520
+        length = 20
         x = np.linspace(ll_lon,ur_lon,length)
         y = np.linspace(ll_lat,ur_lat,length)
         for i in xrange(length):
@@ -162,7 +171,7 @@ class Rad_sim():
         self.ang_2LS = ang_2LS
         self.ang_3LS = ang_3LS
         self.alt = alt
-        T, center = self.get_area()
+        T, center = self.get_area(topography)
         n = np.min(T.shape)
         n2 = n/2
         if self.alt==None:
