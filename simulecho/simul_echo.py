@@ -185,7 +185,7 @@ class Rad_sim():
         return ax
         
         
-    def simulate(self,lon=-50.36111,lat=-25.50528, radius=150, tower_h=25.,
+    def simulate(self,lon=-50.36133,lat=-25.505314, radius=150, tower_h=25.,
                 h=4.5, elev=0.3, pos_LP=0., pos_1LS=-2.7, pos_2LS=-1.9, pos_3LS=-1.3,
                 ang_LP=1., ang_1LS=0.5, ang_2LS=0.25, ang_3LS=0.125, alt=None,topography=0,cbar=1):
          self.fig = plt.figure(figsize=[10,8])
