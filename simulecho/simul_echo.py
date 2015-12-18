@@ -15,7 +15,7 @@ from zoompan import ZoomPan
 
 class Rad_sim():
     def __init__(self):
-        self.units = {'distance': 'm', 'angles': 'dg', 'raio_area': 'Km'}
+        self.units = {'angles': 'dg'}
         data = Dataset("data/etopo1_bedrock.nc")
         self.topo_data = data.variables['Band1'][:]
         #self.topo_data[np.where(self.topo_data < -30)] = -1000
@@ -25,7 +25,7 @@ class Rad_sim():
         self.base_map = street_map(self.lon_data[0], self.lat_data[0],
                                 self.lon_data[self.uy-1], self.lat_data[self.ux-1],
                                 (self.uy+2800,self.ux+2520))
-        self.fig = plt.figure(figsize=[10,8])
+        #self.fig = plt.figure(figsize=[10,8])
     
     def find_area(self):
         #ll = lower left and ur = upper right
@@ -114,7 +114,6 @@ class Rad_sim():
       
     def show_image(self, M, M_size, center, topography=0,cbar=1):
         ll_lon, ll_lat, ur_lon, ur_lat = self.find_area()
-        #fig = plt.figure(figsize=[10,8])
         ax = self.fig.add_subplot(111)
         plt.title("lon = " + str(self.lon) + " e lat = " + str(self.lat) \
                 + "\nelev = " + str(self.elev))
@@ -153,7 +152,7 @@ class Rad_sim():
                     plt.plot(center[1]+M_size-j,center[0]+M_size-i,'o',markersize=1,color='red')
         return ax
 
-    def echo(self,lon=-50.36111,lat=-25.50528, radius=150, tower_h=25.,
+    def echo(self,lon=-50.36133,lat=-25.505314, radius=150, tower_h=25.,
                 h=4.5, elev=0.3, pos_LP=0., pos_1LS=-2.7, pos_2LS=-1.9, pos_3LS=-1.3,
                 ang_LP=1., ang_1LS=0.5, ang_2LS=0.25, ang_3LS=0.125, alt=None,topography=0,cbar=1):
         self.lat = lat
@@ -189,6 +188,7 @@ class Rad_sim():
     def simulate(self,lon=-50.36111,lat=-25.50528, radius=150, tower_h=25.,
                 h=4.5, elev=0.3, pos_LP=0., pos_1LS=-2.7, pos_2LS=-1.9, pos_3LS=-1.3,
                 ang_LP=1., ang_1LS=0.5, ang_2LS=0.25, ang_3LS=0.125, alt=None,topography=0,cbar=1):
+         self.fig = plt.figure(figsize=[10,8])
          ax = self.echo(lon,lat, radius, tower_h,
                 h, elev, pos_LP, pos_1LS, pos_2LS, pos_3LS,
                 ang_LP, ang_1LS, ang_2LS, ang_3LS, alt,topography=topography,cbar=1)
