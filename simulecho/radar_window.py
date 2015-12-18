@@ -6,20 +6,22 @@ import gtk
 import pygtk
 
 class radar_selection():
-    def __init__(self):
-        self.lon = None
-        self.lat = None
+    def __init__(self, lon, lat):
+        self.lon = lon
+        self.lat = lat
         self.lons = [-50.36133, -53.525356, -57.523335]
         self.lats = [-25.505314, -24.875566, -25.333055]
+    
+    
     def set_coord(self, widget, idx):
         self.lon = self.lons[idx]
         self.lat = self.lats[idx]
+    
+    
     def return_coord(self):
-        if self.lon == None:
-            print "Returned Teixeira Soares coordinates."
-            return self.lons[0], self.lats[0]
-        else:
-            return self.lon, self.lat
+        return self.lon, self.lat
+    
+    
     def rad_window(self):
         window = gtk.Window()
         window.set_title("Radars")

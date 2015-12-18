@@ -23,7 +23,9 @@ def set_basemap(widget,entry,topography):
 
 
 def known_radars(widget,entry_lon,entry_lat):
-    known = radar_selection()
+    lon = float(entry_lon.get_text())
+    lat = float(entry_lat.get_text())
+    known = radar_selection(lon, lat)
     known.rad_window()
     lon, lat = known.return_coord()
     entry_lon.set_text(str(lon))
