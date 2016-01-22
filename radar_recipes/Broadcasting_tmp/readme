@@ -1,3 +1,5 @@
+Adapted from pyart odim_h5.py file.
+modifications: complete the sweep_data in order to adapt the brodcasting.
 author : Tulipa Silva 
 email: tulipajs@gmail.com
 
