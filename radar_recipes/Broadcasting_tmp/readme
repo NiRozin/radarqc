@@ -1,0 +1,14 @@
+author : Tulipa Silva 
+email: tulipajs@gmail.com
+
+Some radar data has not complete data in bins dimension.
+So, if your radar file is not with full matrix (shape is not equal nbins) the function will
+be complete.
+
+*This script will be in use temporarily.
+
+===========================================================================================
+How to use
+In order to use, in your pyart folder, you need replace the /aux_io/odim_h5.py by this one.
+Don't be afraid, all pyart functions will be fine with this.
+===========================================================================================
