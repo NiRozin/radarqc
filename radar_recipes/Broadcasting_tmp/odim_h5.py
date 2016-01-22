@@ -277,8 +277,6 @@ def read_odim_h5(filename, field_names=None, additional_metadata=None,
             sweep_data = _get_odim_h5_sweep_data(hfile[dset][h_field_key])
             if sweep_data.shape[1]<nbins:
                tmp = np.ones((sweep_data.shape[0],nbins-sweep_data.shape[1]))*field_dic['_FillValue']
-               print "shape data", sweep_data.shape
-               print "tmp", tmp.shape
                sweep_data = np.hstack((sweep_data, tmp))
             fdata[start:start + rays_in_sweep] = sweep_data[:]       
             start += rays_in_sweep
